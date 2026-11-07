@@ -1,0 +1,666 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>
+<title>Photobox Jasmin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#f6f5f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Limelight&family=Karla:wght@400;600;800&family=Pacifico&display=swap">
+<style>
+/* Layout: one screen at a time, ink-on-paper booth with three strip worlds (classic b/w, hot pink, free color) */
+:root {
+  --paper: #f6f5f1;
+  --ink: #111111;
+  --ink-soft: #5b5a55;
+  --go: #1fa64a;
+  --rec: #e3242b;
+  --pink: #ff2d95;
+  --bulb: #ffd9a0;
+  --f-sign: "Limelight", "Rockwell", Georgia, serif;
+  --f-body: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-script: "Pacifico", "Brush Script MT", cursive;
+  color-scheme: light;
+}
+html, body { height: 100%; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+.screen {
+  min-height: 100%; box-sizing: border-box;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 28px;
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 520px; margin: 0 auto;
+}
+.step {
+  font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600; align-self: flex-start;
+}
+h2 { font-family: var(--f-sign); font-weight: 400; font-size: 30px; margin: 6px 0 18px; align-self: flex-start; text-wrap: balance; }
+
+/* ---------- Screen 1: the booth ---------- */
+#s1 { justify-content: center; padding-block: 20px 36px; }
+.stage { position: relative; width: min(78%, 290px); margin-top: 18px; }
+.booth {
+  width: 100%; aspect-ratio: 3 / 5; max-width: 100%;
+  border: 5px solid var(--ink); background: var(--paper);
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; box-sizing: border-box;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+/* string lights: sagging wire across the top, hanging down the sides, bulbs hanging from sockets */
+.lights { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.lights svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.lights .glow { fill: #ffcf6e; opacity: .55; animation: glow var(--d, 1.6s) ease-in-out infinite; }
+.lights .bulb { fill: var(--bulb); stroke: var(--ink); stroke-width: 1.3; animation: bulb var(--d, 1.6s) ease-in-out infinite; }
+.lights .b .glow, .lights .b .bulb { animation-direction: reverse; }
+@keyframes glow { 0%, 100% { opacity: .25; } 50% { opacity: .75; } }
+@keyframes bulb { 0%, 100% { fill: #f3c98c; } 50% { fill: #fff6e4; } }
+.sign {
+  margin-top: 42px; width: 84%; box-sizing: border-box;
+  border: 4px solid var(--ink); background: var(--ink); color: var(--paper);
+  font-family: var(--f-sign); font-size: clamp(20px, 7vw, 28px);
+  text-align: center; padding: 7px 4px 5px; letter-spacing: .04em;
+  outline: 3px dashed var(--paper); outline-offset: -9px;
+}
+.enter {
+  margin-top: 12px; background: var(--paper); border: 4px solid var(--ink);
+  font-weight: 800; font-size: 17px; letter-spacing: .2em; text-transform: uppercase;
+  padding: 8px 22px 8px 26px; border-radius: 999px; box-shadow: 0 5px 0 var(--ink);
+  transition: transform .08s, box-shadow .08s; position: relative; z-index: 3;
+}
+.enter:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.cabin {
+  flex: 1; width: 76%; margin: 12px 0 0; border: 4px solid var(--ink); border-bottom: 0;
+  position: relative; overflow: hidden; display: flex;
+  background: repeating-linear-gradient(0deg, var(--paper) 0 14px, #e4e3dd 14px 16px); /* back wall */
+}
+.rod { position: absolute; top: 0; left: -4px; right: -4px; height: 8px; background: var(--ink); z-index: 2; }
+.curtain {
+  background: repeating-linear-gradient(90deg, var(--paper) 0 9px, var(--ink) 9px 11px, var(--paper) 11px 18px, #d9d8d2 18px 22px);
+  animation: sway 4s ease-in-out infinite; transform-origin: top; height: 100%;
+}
+.curtain.l { width: 48%; border-right: 3px solid var(--ink); }
+.curtain.r { width: 14%; margin-left: auto; border-left: 3px solid var(--ink); animation-delay: -2s;
+  background: repeating-linear-gradient(90deg, var(--paper) 0 4px, var(--ink) 4px 6px, #d9d8d2 6px 9px); }
+@keyframes sway { 50% { transform: skewX(1.2deg); } }
+/* round retro wooden stool, sketch style: thick round seat, three splayed legs, no crossbars */
+.stool { position: absolute; left: 53%; bottom: 0; width: 32%; height: 38%; }
+.stool .seat { position: absolute; left: 0; right: 0; top: 0; height: 30%; }
+.stool .seat::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 75%; border: 3px solid var(--ink); border-radius: 50%; background: var(--paper); box-sizing: border-box; box-shadow: 0 4px 0 var(--ink); }
+.stool .leg { position: absolute; top: 22%; width: 9%; height: 78%; background: var(--paper); border: 3px solid var(--ink); border-top: 0; box-sizing: border-box; transform-origin: top center; border-radius: 0 0 3px 3px; }
+.stool .leg.l { left: 12%; transform: rotate(7deg); }
+.stool .leg.m { left: 45.5%; top: 26%; height: 74%; }
+.stool .leg.r { right: 12%; transform: rotate(-7deg); }
+/* coin slot on the wall, lower right, beside the cabin */
+.coin {
+  position: absolute; right: 1.5%; bottom: 20%; width: 8%; aspect-ratio: 1 / 2.2;
+  border: 2px solid var(--ink); border-radius: 3px; background: var(--paper); box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+}
+.coin::before { content: ""; width: 3px; height: 55%; background: var(--ink); border-radius: 2px; }
+.floor { width: calc(100% + 56px); height: 5px; background: var(--ink); margin-top: -1px; }
+.hint { margin-top: 28px; color: var(--ink-soft); font-size: 14px; text-align: center; }
+
+/* ---------- Screen 2: choose ---------- */
+.strips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; }
+.pick {
+  border: 3px solid transparent; background: none; padding: 10px 4px 12px; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0;
+}
+.pick[aria-pressed="true"] { border-color: var(--ink); background: #ebeae4; }
+.pick span { font-weight: 800; font-size: 13px; margin-top: auto; text-align: center; line-height: 1.1; }
+.mini {
+  width: 64px; padding: 6px 6px 18px; display: grid; gap: 4px; box-shadow: 0 6px 14px rgba(0,0,0,.18);
+  transform: rotate(-3deg); box-sizing: border-box;
+}
+.pick:nth-child(2) .mini { transform: rotate(3deg); }
+.pick:nth-child(3) .mini { transform: rotate(-2deg); }
+.pick:nth-child(4) .mini { transform: rotate(2deg); }
+.mini b { display: block; aspect-ratio: 4/3; border-radius: 1px; background: linear-gradient(135deg, #7fb2e0, #2e5f8f); }
+.mini.white { background: #fff; border: 3px solid var(--ink); }
+.mini.white b { border: 1px solid var(--ink); }
+.mini.black { background: #111; }
+.mini.black b { border: 2px solid #fff; }
+.mini.retro { background: #111; padding: 6px 10px 18px; position: relative; }
+.mini.retro::before, .mini.retro::after { content: ""; position: absolute; top: 4px; bottom: 4px; width: 4px;
+  background: repeating-linear-gradient(0deg, #fff 0 4px, transparent 4px 8px); }
+.mini.retro::before { left: 2px; } .mini.retro::after { right: 2px; }
+.mini.retro b { border: 1px solid #fff; }
+.mini.custom { background: var(--custom, #1e6fe3); }
+.mini.custom b { border: 2px solid #fff; }
+.mini.bw b { filter: grayscale(1); }
+
+.label { font-weight: 800; align-self: flex-start; margin: 22px 0 10px; }
+.spectrum { width: 100%; display: none; }
+.spectrum.on { display: block; }
+.hue {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 26px; border-radius: 999px; border: 3px solid var(--ink);
+  background: linear-gradient(90deg, hsl(0 85% 55%), hsl(60 85% 55%), hsl(120 85% 55%), hsl(180 85% 55%), hsl(240 85% 55%), hsl(300 85% 55%), hsl(360 85% 55%));
+  box-sizing: border-box; margin: 0;
+}
+.hue::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%; background: var(--custom, #1e6fe3); border: 3px solid #fff; box-shadow: 0 0 0 3px var(--ink); }
+.hue::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--custom, #1e6fe3); border: 3px solid #fff; box-shadow: 0 0 0 3px var(--ink); }
+.toggle { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border: 3px solid var(--ink); border-radius: 999px; overflow: hidden; }
+.toggle button { border: 0; background: var(--paper); padding: 12px; font-weight: 800; }
+.toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.toggle .col[aria-pressed="true"] { background: linear-gradient(90deg, #e3242b, #f2a900, #1fa64a, #1e6fe3, #ff2d95); }
+
+.next {
+  position: fixed;
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  width: 58px; height: 58px; border-radius: 50%; border: 0;
+  background: var(--go); color: #fff; font-size: 26px; font-weight: 800;
+  box-shadow: 0 4px 0 #136b2f, 0 8px 18px rgba(0,0,0,.2);
+}
+.next:active { transform: translateY(3px); box-shadow: 0 1px 0 #136b2f; }
+
+/* ---------- Screen 3: camera ---------- */
+.viewer {
+  width: 100%; aspect-ratio: 4/3; max-width: 100%; background: var(--ink); border-radius: 6px;
+  position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.viewer video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.viewer video.bw { filter: grayscale(1) contrast(1.1); }
+.count {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-sign); font-size: 120px; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,.5);
+  pointer-events: none;
+}
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.flash.on { animation: flash .45s ease-out; }
+@keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
+.ask { color: #fff; text-align: center; padding: 20px; display: grid; gap: 14px; justify-items: center; }
+.ask p { margin: 0; color: #d4d3cd; font-size: 14px; max-width: 30ch; }
+.btn {
+  border: 3px solid var(--ink); background: var(--paper); border-radius: 999px;
+  padding: 11px 20px; font-weight: 800;
+}
+.ask .btn { border-color: #fff; color: var(--ink); }
+.askBtns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; margin-top: 14px; }
+.thumbs div { aspect-ratio: 4/3; border: 2px dashed #bdbcb5; border-radius: 4px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: #9b9a93; font-weight: 800; }
+.thumbs div.done { border: 2px solid var(--ink); color: transparent; }
+.shoot { margin-top: 22px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.shutter {
+  width: 64px; height: 64px; border-radius: 50%; border: 5px solid var(--ink);
+  background: var(--rec); box-shadow: inset 0 0 0 4px var(--paper);
+}
+.shutter:disabled { opacity: .4; }
+.shoot small { color: var(--ink-soft); font-weight: 600; }
+
+/* ---------- Screen 4: review + output ---------- */
+#review, #final { width: 100%; display: flex; flex-direction: column; align-items: center; }
+#review h2, #final h2 { align-self: flex-start; }
+.note { margin: -8px 0 14px; color: var(--ink-soft); font-size: 14px; align-self: flex-start; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.cell { position: relative; padding: 0; border: 3px solid var(--ink); border-radius: 6px; background: #ddd; overflow: hidden; aspect-ratio: 4/3; }
+.cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cell .redo {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.9);
+  background: var(--rec); color: #fff; font-weight: 800; font-size: 14px; padding: 8px 14px; border-radius: 999px;
+  opacity: 0; transition: opacity .15s, transform .15s; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,.35);
+}
+.cell[aria-pressed="true"] { border-color: var(--rec); }
+.cell[aria-pressed="true"] img { filter: brightness(.6); }
+.cell[aria-pressed="true"] .redo { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+
+#out { max-width: 100%; height: auto; max-height: 70vh; width: auto; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 22px; }
+.caption { width: 100%; display: grid; gap: 6px; margin-top: 20px; }
+.caption label { font-weight: 800; font-size: 14px; margin-top: 6px; }
+.caption input {
+  font: inherit; font-weight: 600; padding: 11px 14px; border: 3px solid var(--ink); border-radius: 12px;
+  background: #fff; color: var(--ink); width: 100%; box-sizing: border-box;
+}
+.caption input:focus { outline: 3px solid var(--pink); outline-offset: 2px; }
+.btn.dark { background: var(--ink); color: var(--paper); }
+.msg { font-size: 13px; color: var(--ink-soft); margin-top: 10px; text-align: center; min-height: 1em; }
+
+@media (prefers-reduced-motion: reduce) { .curtain, .lights i { animation: none; } .flash.on { animation: none; } }
+</style>
+
+<!-- Screen 1 -->
+<section class="screen" id="s1">
+  <div class="stage">
+    <div class="lights" id="lights" aria-hidden="true"></div>
+    <div class="booth">
+      <div class="sign">Photobooth</div>
+      <button class="enter" id="enterBtn">Enter</button>
+      <div class="cabin" aria-hidden="true">
+        <div class="rod"></div>
+        <div class="stool"><div class="leg l"></div><div class="leg m"></div><div class="leg r"></div><div class="seat"></div></div>
+        <div class="curtain l"></div>
+        <div class="curtain r"></div>
+      </div>
+      <div class="coin" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="floor" aria-hidden="true"></div>
+  <p class="hint">4 Fotos · 3 Sekunden Countdown · 1 Fotostreifen</p>
+</section>
+
+<!-- Screen 2 -->
+<section class="screen" id="s2" hidden>
+  <div class="step">Schritt 1 von 3</div>
+  <h2>Wähle deinen Streifen</h2>
+  <div class="strips">
+    <button class="pick" data-style="white" aria-pressed="true">
+      <div class="mini white bw"><b></b><b></b><b></b><b></b></div><span>Weiß</span>
+    </button>
+    <button class="pick" data-style="black" aria-pressed="false">
+      <div class="mini black"><b></b><b></b><b></b><b></b></div><span>Schwarz</span>
+    </button>
+    <button class="pick" data-style="retro" aria-pressed="false">
+      <div class="mini retro"><b></b><b></b><b></b><b></b></div><span>Retro</span>
+    </button>
+    <button class="pick" data-style="custom" aria-pressed="false">
+      <div class="mini custom"><b></b><b></b><b></b><b></b></div><span>Deine Farbe</span>
+    </button>
+  </div>
+  <div class="spectrum" id="spectrum">
+    <div class="label">Streifenfarbe</div>
+    <input class="hue" type="range" id="hue" min="0" max="360" value="215" aria-label="Farbton des Fotostreifens">
+  </div>
+  <div class="label">Fotos</div>
+  <div class="toggle">
+    <button id="bwBtn" aria-pressed="true">Schwarz &amp; Weiß</button>
+    <button id="colBtn" class="col" aria-pressed="false">Bunt</button>
+  </div>
+  <button class="next" id="toCam" aria-label="Weiter zur Kamera">➜</button>
+</section>
+
+<!-- Screen 3 -->
+<section class="screen" id="s3" hidden>
+  <div class="step">Schritt 2 von 3</div>
+  <h2>Bitte lächeln!</h2>
+  <div class="viewer">
+    <div class="ask" id="ask">
+      <strong>Kamerazugriff</strong>
+      <p id="askText">Live-Kamera mit Countdown – oder 4 vorher geknipste Fotos aus der Galerie wählen.</p>
+      <div class="askBtns">
+        <button class="btn" id="camBtn">Kamera erlauben</button>
+        <button class="btn" id="galBtn">Aus Galerie wählen</button>
+      </div>
+    </div>
+    <video id="video" playsinline muted hidden></video>
+    <div class="count" id="count"></div>
+    <div class="flash" id="flash"></div>
+  </div>
+  <div class="thumbs" id="thumbs"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+  <div class="shoot" id="shoot" hidden>
+    <button class="shutter" id="shutter" aria-label="Foto auslösen"></button>
+    <small id="shotInfo">Foto 1 von 4</small>
+  </div>
+  <input type="file" id="fileIn" accept="image/*" capture="user" hidden>
+  <input type="file" id="galIn" accept="image/*" multiple hidden>
+</section>
+
+<!-- Screen 4 -->
+<section class="screen" id="s4" hidden>
+  <div class="step">Schritt 3 von 3</div>
+  <div id="review">
+    <h2>Alles gut getroffen?</h2>
+    <p class="note">Tippe auf ein Foto, um es zu wiederholen.</p>
+    <div class="grid" id="grid">
+      <button class="cell" data-i="0"><img alt="Foto 1"><span class="redo">Wiederholen</span></button>
+      <button class="cell" data-i="1"><img alt="Foto 2"><span class="redo">Wiederholen</span></button>
+      <button class="cell" data-i="2"><img alt="Foto 3"><span class="redo">Wiederholen</span></button>
+      <button class="cell" data-i="3"><img alt="Foto 4"><span class="redo">Wiederholen</span></button>
+    </div>
+    <div class="caption">
+      <label for="capText">Text auf dem Streifen</label>
+      <input id="capText" type="text" maxlength="24" value="Photobooth" placeholder="z. B. Jasmins Geburtstag" autocomplete="off">
+      <label for="capSub">Zweite Zeile</label>
+      <input id="capSub" type="text" maxlength="30" placeholder="leer = heutiges Datum" autocomplete="off">
+    </div>
+    <div class="actions">
+      <button class="btn dark" id="printBtn">Fotostreifen drucken</button>
+    </div>
+  </div>
+  <div id="final" hidden>
+    <h2>Dein Fotostreifen</h2>
+    <canvas id="out"></canvas>
+    <div class="actions">
+      <button class="btn dark" id="saveBtn">Speichern</button>
+      <button class="btn" id="againBtn">Nochmal</button>
+    </div>
+    <div class="msg" id="msg"></div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+const ASK_DEFAULT = "Live-Kamera mit Countdown – oder 4 vorher geknipste Fotos aus der Galerie wählen.";
+const state = { style: "white", bw: true, hue: 215, shots: [null, null, null, null], urls: [null, null, null, null] };
+let stream = null, fallback = false, busy = false;
+
+const hueColor = h => `hsl(${h} 85% 52%)`;
+
+function show(n) {
+  ["s1","s2","s3","s4"].forEach((id, i) => $(id).hidden = (i !== n - 1));
+  window.scrollTo(0, 0);
+}
+
+/* Screen 1: string lights drawn as SVG from the real box size */
+function drawLights() {
+  const box = $("lights"), W = box.clientWidth, H = box.clientHeight; if (!W) return;
+  const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  // wire: two sagging swags across the top, then wavy drops down both sides
+  const y0 = 6, sag = 0, mid = W / 2, xs = 9, xe = W - 9;
+  const top = `M ${xs} ${y0} Q ${W * .25} ${y0 + sag} ${mid} ${y0} Q ${W * .75} ${y0 + sag} ${xe} ${y0}`;
+  const sideL = `M ${xs} ${y0} C ${xs + 16} ${H * .25} ${xs - 12} ${H * .65} ${xs + 6} ${H}`;
+  const sideR = `M ${xe} ${y0} C ${xe - 16} ${H * .25} ${xe + 12} ${H * .65} ${xe - 6} ${H}`;
+  [top, sideL, sideR].forEach(d => svg.appendChild(el("path", { d, fill: "none", stroke: "#111", "stroke-width": 2, "stroke-linecap": "round" })));
+  let k = 0;
+  const bulb = (x, y, ang) => {
+    const g = el("g", { class: k % 2 ? "b" : "", transform: `translate(${x} ${y}) rotate(${ang})` });
+    g.style.setProperty("--d", rnd(1.2, 2.2).toFixed(2) + "s");
+    g.style.animationDelay = rnd(0, 2).toFixed(2) + "s";
+    g.appendChild(el("line", { x1: 0, y1: 0, x2: 0, y2: 3, stroke: "#111", "stroke-width": 1.2 }));
+    g.appendChild(el("rect", { x: -2, y: 3, width: 4, height: 4, rx: .8, fill: "#f6f5f1", stroke: "#111", "stroke-width": 1.2 }));
+    g.appendChild(el("circle", { class: "glow", cx: 0, cy: 11.5, r: 9 }));
+    g.appendChild(el("circle", { class: "bulb", cx: 0, cy: 11.5, r: 4.2 }));
+    svg.appendChild(g); k++;
+  };
+  const q = (t, p0, c, p1) => (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * c + t * t * p1;
+  for (let i = 1; i <= 12; i++) { const t = i / 13; bulb(xs + t * (xe - xs), y0 + sag, rnd(-10, 10)); }
+  // side bulbs follow the cubic side wires
+  const cub = (t, p0, c1, c2, p1) => { const u = 1 - t; return u*u*u*p0 + 3*u*u*t*c1 + 3*u*t*t*c2 + t*t*t*p1; };
+  for (let i = 1; i <= 12; i++) {
+    const t = i / 13, y = cub(t, y0, H * .25, H * .65, H);
+    bulb(cub(t, xs, xs + 16, xs - 12, xs + 6), y, rnd(-8, 8));
+    bulb(cub(t, xe, xe - 16, xe + 12, xe - 6), y, rnd(-8, 8));
+  }
+  box.replaceChildren(svg);
+}
+drawLights();
+addEventListener("resize", drawLights);
+$("enterBtn").onclick = () => show(2);
+
+/* Screen 2 */
+function setStyle(s) {
+  state.style = s;
+  document.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", x.dataset.style === s));
+  $("spectrum").classList.toggle("on", s === "custom");
+}
+document.querySelectorAll(".pick").forEach(b => b.onclick = () => setStyle(b.dataset.style));
+function setHue(h) {
+  state.hue = +h; $("hue").value = h;
+  document.documentElement.style.setProperty("--custom", hueColor(h));
+}
+$("hue").oninput = e => setHue(e.target.value);
+setHue(215);
+function setBW(v) {
+  state.bw = v;
+  $("bwBtn").setAttribute("aria-pressed", v); $("colBtn").setAttribute("aria-pressed", !v);
+  document.querySelectorAll(".mini").forEach(m => m.classList.toggle("bw", v));
+}
+setBW(true);
+$("bwBtn").onclick = () => setBW(true);
+$("colBtn").onclick = () => setBW(false);
+$("toCam").onclick = () => {
+  clearSave(); resetShots(); busy = false;
+  $("shoot").hidden = true; $("camBtn").hidden = false; $("askText").textContent = ASK_DEFAULT;
+  show(3); save();
+};
+
+/* Screen 3 */
+const EMPTY = () => [null, null, null, null];
+let retake = -1; // index to replace, -1 = fill all empty slots
+let mode = "cam";   // "cam" | "gallery"
+
+function resetShots() {
+  state.shots = EMPTY(); state.urls = EMPTY(); retake = -1;
+  renderThumbs();
+  $("shutter").disabled = false;
+  $("video").classList.toggle("bw", state.bw);
+}
+function missing() { return retake >= 0 ? [retake] : [0, 1, 2, 3].filter(i => !state.shots[i]); }
+function renderThumbs() {
+  [...$("thumbs").children].forEach((d, i) => {
+    const u = state.urls[i];
+    d.className = u ? "done" : ""; d.style.backgroundImage = u ? `url(${u})` : ""; d.textContent = i + 1;
+  });
+  const m = missing();
+  $("shotInfo").textContent = m.length ? `Foto ${m[0] + 1} von 4` : "Fertig!";
+}
+
+async function startCam() {
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error("nocam");
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false });
+    const v = $("video");
+    v.srcObject = stream; v.hidden = false; await v.play();
+    $("ask").hidden = true; $("shoot").hidden = false; $("shutter").hidden = true;
+    fallback = false;
+    runSequence();
+  } catch (e) {
+    // Live-Kamera nicht möglich (z. B. in eingebetteter Vorschau): Handykamera-App als Ersatz
+    fallback = true;
+    $("askText").textContent = "Live-Kamera ist hier nicht verfügbar. Tippe auf den roten Knopf – jedes Foto wird über die Kamera-App aufgenommen.";
+    $("camBtn").hidden = true;
+    $("shoot").hidden = false; $("shutter").hidden = false;
+  }
+}
+$("camBtn").onclick = () => { mode = "cam"; startCam(); };
+
+/* Galerie-Modus: Fotos vorher knipsen, dann hier auswählen – kein Wechsel zur Kamera-App */
+$("galBtn").onclick = () => { mode = "gallery"; $("galIn").value = ""; $("galIn").click(); };
+// Foto speicherschonend laden: schon beim Dekodieren auf max. 1200 px verkleinern (createImageBitmap), sonst Fallback über <img>
+async function loadImg(file) {
+  if (window.createImageBitmap) {
+    try { return await createImageBitmap(file, { resizeWidth: 1200, resizeQuality: "medium", imageOrientation: "from-image" }); }
+    catch (e) { try { return await createImageBitmap(file); } catch (e2) {} }
+  }
+  return new Promise(r => { const im = new Image(); im.onload = () => r(im); im.onerror = () => r(null); im.src = URL.createObjectURL(file); });
+}
+function release(img) { if (img.close) img.close(); else if (img.src?.startsWith("blob:")) URL.revokeObjectURL(img.src); }
+$("galIn").onchange = async () => {
+  const files = [...$("galIn").files]; if (!files.length) return;
+  const slots = missing();
+  for (let k = 0; k < Math.min(files.length, slots.length); k++) {
+    const img = await loadImg(files[k]);
+    if (img) { try { setShot(missing()[0], grab(img, false)); } catch (e) {} release(img); }
+  }
+  const left = missing().length;
+  if (!left) finishShooting();
+  else $("askText").textContent = `Noch ${left} Foto${left > 1 ? "s" : ""} – tippe auf „Aus Galerie wählen“ für die restlichen.`;
+};
+
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+// Live-Kamera: für jeden fehlenden Platz 3-2-1-Countdown + Foto, Kamera bleibt offen, dann Prüfseite
+async function runSequence() {
+  if (busy) return;
+  busy = true;
+  await wait(600);
+  let m;
+  while ((m = missing()).length) {
+    const i = m[0];
+    $("shotInfo").textContent = `Foto ${i + 1} von 4`;
+    for (const n of [3, 2, 1]) { $("count").textContent = n; await wait(1000); }
+    $("count").textContent = "";
+    const f = $("flash"); f.classList.remove("on"); void f.offsetWidth; f.classList.add("on");
+    setShot(i, grab($("video"), true));
+    if (missing().length) await wait(1200);
+  }
+  busy = false;
+  finishShooting();
+}
+
+$("shutter").onclick = () => {
+  if (!missing().length) return;
+  $("fileIn").value = ""; $("fileIn").click();
+};
+
+$("fileIn").onchange = async () => {
+  const file = $("fileIn").files[0]; if (!file) return;
+  const img = await loadImg(file);
+  if (!img) { $("shotInfo").textContent = "Foto konnte nicht gelesen werden – bitte nochmal."; return; }
+  try { setShot(missing()[0], grab(img, false)); } catch (e) { $("shotInfo").textContent = "Foto konnte nicht gelesen werden – bitte nochmal."; }
+  release(img);
+  $("fileIn").value = "";
+  if (!missing().length) finishShooting();
+};
+
+// crop source to 4:3, mirror live video; b/w via pixel conversion (works in every browser)
+function grab(src, mirror) {
+  const sw = src.videoWidth || src.naturalWidth || src.width, sh = src.videoHeight || src.naturalHeight || src.height;
+  const W = 800, H = 600, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  let cw = sw, ch = sw * 3 / 4; if (ch > sh) { ch = sh; cw = sh * 4 / 3; }
+  if (mirror) { x.translate(W, 0); x.scale(-1, 1); }
+  x.drawImage(src, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, W, H);
+  if (state.bw) toGray(c);
+  return c;
+}
+function toGray(c) {
+  const x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+  for (let i = 0; i < p.length; i += 4) {
+    let g = .299 * p[i] + .587 * p[i + 1] + .114 * p[i + 2];
+    g = Math.max(0, Math.min(255, (g - 128) * 1.1 + 128)); // slight contrast
+    p[i] = p[i + 1] = p[i + 2] = g;
+  }
+  x.putImageData(d, 0, 0);
+}
+
+function setShot(i, img, restoring) {
+  state.shots[i] = img;
+  state.urls[i] = img.toDataURL ? img.toDataURL("image/jpeg", .8) : img.src;
+  if (retake === i) retake = -1;
+  renderThumbs();
+  if (!restoring) save();
+}
+function finishShooting() {
+  $("shotInfo").textContent = "Fertig!";
+  setTimeout(() => { stopCam(); showReview(); }, 700);
+}
+function stopCam() { if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; } $("video").hidden = true; $("ask").hidden = false; $("camBtn").hidden = false; $("shoot").hidden = true; }
+
+// Zwischenstand sichern: Handy lädt die Seite nach der Kamera-App manchmal neu
+// localStorage überlebt auch einen neu erzeugten WebView (iOS), sessionStorage als Zweitweg
+const stores = () => { const a = []; try { a.push(localStorage); } catch (e) {} try { a.push(sessionStorage); } catch (e) {} return a; };
+function save() {
+  const data = JSON.stringify({ t: Date.now(), screen: 3, style: state.style, bw: state.bw, hue: state.hue, urls: state.urls, retake });
+  let ok = false;
+  for (const st of stores()) { try { st.setItem("pb", data); if (st.getItem("pb") === data) ok = true; } catch (e) {} }
+  if (!ok) $("askText").textContent = "Hinweis: Fotos können in dieser Ansicht nicht zwischengespeichert werden. Bitte die App im normalen Browser öffnen.";
+}
+function clearSave() { for (const st of stores()) { try { st.removeItem("pb"); } catch (e) {} } }
+async function restore() {
+  let d = null;
+  for (const st of stores()) { try { const v = JSON.parse(st.getItem("pb") || "null"); if (v?.screen === 3 && (!d || v.t > d.t)) d = v; } catch (e) {} }
+  if (!d || Date.now() - (d.t || 0) > 30 * 60 * 1000) { clearSave(); return; }
+  setStyle(d.style || "white"); setBW(!!d.bw); setHue(d.hue ?? 215);
+  resetShots();
+  const urls = Array.isArray(d.urls) ? d.urls : [];
+  for (let i = 0; i < 4; i++) {
+    if (!urls[i]) continue;
+    const img = await new Promise(r => { const im = new Image(); im.onload = () => r(im); im.onerror = () => r(null); im.src = urls[i]; });
+    if (img) setShot(i, img, true);
+  }
+  retake = (typeof d.retake === "number" && d.retake >= 0 && d.retake < 4) ? d.retake : -1;
+  renderThumbs();
+  if (!missing().length) { showReview(); }
+  else {
+    show(3); fallback = true;
+    $("camBtn").hidden = true; $("shoot").hidden = false; $("shutter").hidden = false;
+    $("askText").textContent = state.urls.some(Boolean) ? "Weiter geht's – tippe auf den roten Knopf für das nächste Foto." : "Tippe auf den roten Knopf – jedes Foto wird über die Kamera-App aufgenommen.";
+  }
+}
+
+/* Screen 4: review, retake single photos, then print */
+function showReview() {
+  $("review").hidden = false; $("final").hidden = true;
+  document.querySelectorAll(".cell").forEach((c, i) => { c.querySelector("img").src = state.urls[i] || ""; c.setAttribute("aria-pressed", "false"); });
+  show(4);
+}
+document.querySelectorAll(".cell").forEach(c => {
+  c.onclick = e => {
+    const i = +c.dataset.i;
+    if (e.target.classList.contains("redo")) { startRetake(i); return; }
+    const on = c.getAttribute("aria-pressed") === "true";
+    document.querySelectorAll(".cell").forEach(x => x.setAttribute("aria-pressed", "false"));
+    c.setAttribute("aria-pressed", on ? "false" : "true");
+  };
+});
+function startRetake(i) {
+  retake = i; busy = false;
+  renderThumbs();
+  $("camBtn").hidden = false; $("shoot").hidden = true; $("askText").textContent = `Foto ${i + 1} wird ersetzt.`;
+  show(3); save();
+  if (mode === "gallery") { $("galIn").value = ""; $("galIn").click(); } // picker opens from the tap
+  else startCam(); // camera prompt is allowed from the tap
+}
+$("printBtn").onclick = () => { renderStrip(); $("review").hidden = true; $("final").hidden = false; window.scrollTo(0, 0); };
+
+/* Screen 4 */
+function renderStrip() {
+  const c = $("out"), x = c.getContext("2d");
+  const P = 64, PW = 520, PH = 390, G = 44, FOOT = 170;
+  c.width = PW + P * 2; c.height = P + 4 * PH + 3 * G + FOOT;
+  const s = state.style;
+  const bg = s === "white" ? "#ffffff" : (s === "black" || s === "retro") ? "#111111" : hueColor(state.hue);
+  x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+  if (s === "white") { x.strokeStyle = "#111"; x.lineWidth = 8; x.strokeRect(4, 4, c.width - 8, c.height - 8); }
+  if (s === "retro") { // film sprocket holes down both edges
+    x.fillStyle = "#fff";
+    for (let y = 14; y < c.height - 14; y += 28) { x.fillRect(10, y, 14, 16); x.fillRect(c.width - 24, y, 14, 16); }
+  }
+  state.shots.forEach((img, i) => {
+    const y = P + i * (PH + G);
+    if (s === "white") {
+      x.drawImage(img, P, y, PW, PH);
+      x.strokeStyle = "#111"; x.lineWidth = 4; x.strokeRect(P, y, PW, PH);
+    } else if (s === "retro") {
+      x.drawImage(img, P, y, PW, PH);
+      x.strokeStyle = "#fff"; x.lineWidth = 3; x.strokeRect(P, y, PW, PH);
+    } else {
+      x.fillStyle = "#fff"; x.fillRect(P - 8, y - 8, PW + 16, PH + 16);
+      x.drawImage(img, P, y, PW, PH);
+    }
+  });
+  const fy = P + 4 * PH + 3 * G;
+  const title = ($("capText").value.trim() || "Photobooth");
+  const d = ($("capSub").value.trim() || new Date().toLocaleDateString("de-DE"));
+  const fit = (txt, font, max) => { x.font = font; let size = parseInt(font); while (x.measureText(txt).width > max && size > 20) { size -= 2; x.font = font.replace(/\d+px/, size + "px"); } };
+  x.textAlign = "center";
+  if (s === "white" || s === "black" || s === "retro") {
+    x.fillStyle = s === "white" ? "#111" : "#fff";
+    fit(title.toUpperCase(), "56px Limelight, Georgia, serif", c.width - 100); x.fillText(title.toUpperCase(), c.width / 2, fy + 78);
+    fit(d, "600 24px Karla, sans-serif", c.width - 100); x.fillText(d, c.width / 2, fy + 118);
+  } else {
+    x.fillStyle = "#fff"; fit(title, "60px Pacifico, cursive", c.width - 100); x.fillText(title, c.width / 2, fy + 82);
+    fit("♥ " + d + " ♥", "800 24px Karla, sans-serif", c.width - 100); x.fillText("♥ " + d + " ♥", c.width / 2, fy + 124);
+  }
+}
+
+$("saveBtn").onclick = async () => {
+  $("msg").textContent = "";
+  const blob = await new Promise(r => $("out").toBlob(r, "image/png"));
+  const filename = `fotostreifen-${Date.now()}.png`;
+  try {
+    const dl = window.claude?.use ? await window.claude.use("downloads") : null;
+    if (dl) { await dl.save({ filename, data: blob }); $("msg").textContent = "Gespeichert."; return; }
+  } catch (e) { if (e?.code === "declined") return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  $("msg").textContent = "Tipp: Auf dem iPhone das Bild lange drücken → „In Fotos sichern“.";
+};
+$("againBtn").onclick = () => { clearSave(); resetShots(); show(2); };
+
+// Start immer auf Seite 1; gespeicherter Zwischenstand wird nicht automatisch wiederhergestellt
+clearSave();
+document.fonts?.ready.then(() => { if (!$("s4").hidden && !$("final").hidden) renderStrip(); });
+</script>
+</body></html>
